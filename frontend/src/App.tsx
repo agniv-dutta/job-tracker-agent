@@ -1,4 +1,3 @@
-import React from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Toaster } from 'react-hot-toast';
@@ -6,6 +5,8 @@ import { AuthProvider, PrivateRoute } from './context/AuthContext';
 import { Login } from './pages/Login';
 import { Register } from './pages/Register';
 import { JobSearch } from './pages/JobSearch';
+import { SavedJobs } from './pages/SavedJobs';
+import { Navbar } from './components/Navbar';
 
 // Placeholder components - will be created
 const Dashboard = () => <div className="min-h-screen bg-gray-50 p-8"><h1 className="text-3xl font-bold mb-6">Dashboard</h1><div className="grid grid-cols-4 gap-4 mb-8"><div className="bg-white p-6 rounded-lg shadow"><h3 className="text-gray-500 text-sm">Total Applications</h3><p className="text-3xl font-bold">0</p></div><div className="bg-white p-6 rounded-lg shadow"><h3 className="text-gray-500 text-sm">Applied</h3><p className="text-3xl font-bold">0</p></div><div className="bg-white p-6 rounded-lg shadow"><h3 className="text-gray-500 text-sm">Interviews</h3><p className="text-3xl font-bold">0</p></div><div className="bg-white p-6 rounded-lg shadow"><h3 className="text-gray-500 text-sm">Offers</h3><p className="text-3xl font-bold">0</p></div></div></div>;
@@ -29,6 +30,7 @@ function App() {
       <AuthProvider>
         <BrowserRouter>
           <div className="App">
+            <Navbar />
             <Routes>
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
@@ -45,6 +47,14 @@ function App() {
                 element={
                   <PrivateRoute>
                     <JobSearch />
+                  </PrivateRoute>
+                }
+              />
+              <Route
+                path="/saved-jobs"
+                element={
+                  <PrivateRoute>
+                    <SavedJobs />
                   </PrivateRoute>
                 }
               />
