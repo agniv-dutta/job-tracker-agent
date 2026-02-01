@@ -21,7 +21,7 @@ WATSONX_API_KEY = os.getenv("WATSONX_API_KEY", "")
 WATSONX_URL = os.getenv("WATSONX_URL", "https://us-south.ml.cloud.ibm.com")
 WATSONX_PROJECT_ID = os.getenv("WATSONX_PROJECT_ID", "")
 IBM_IAM_API_KEY = os.getenv("IBM_IAM_API_KEY", "")
-MODEL_ID = "ibm/granite-13b-chat-v2"
+MODEL_ID = "ibm/granite-3-8b-instruct"  # Updated to available model
 
 # Check if credentials are available
 WATSONX_AVAILABLE = bool(WATSONX_API_KEY and WATSONX_PROJECT_ID)
@@ -32,12 +32,16 @@ if not WATSONX_AVAILABLE:
 def _get_iam_token() -> Optional[str]:
     """
     Get IBM Cloud IAM access token
+    Try Watson API key first, then fall back to IAM API key
     
     Returns:
         Access token or None if failed
     """
-    if not IBM_IAM_API_KEY:
-        logger.warning("IBM_IAM_API_KEY not configured")
+    # First try using the Watson API key directly (preferred for Watson Studio keys)
+    api_key = WATSONX_API_KEY or IBM_IAM_API_KEY
+    
+    if not api_key:
+        logger.warning("No API key configured (WATSONX_API_KEY or IBM_IAM_API_KEY)")
         return None
     
     try:
@@ -46,15 +50,18 @@ def _get_iam_token() -> Optional[str]:
             headers={"Content-Type": "application/x-www-form-urlencoded"},
             data={
                 "grant_type": "urn:ibm:params:oauth:grant-type:apikey",
-                "apikey": IBM_IAM_API_KEY
+                "apikey": api_key
             },
             timeout=30.0
         )
         
         if response.status_code == 200:
-            return response.json().get("access_token")
+            token = response.json().get("access_token")
+            logger.info(f"Successfully obtained IAM token using {'WATSONX_API_KEY' if api_key == WATSONX_API_KEY else 'IBM_IAM_API_KEY'}")
+            return token
         else:
             logger.error(f"Failed to get IAM token: {response.status_code}")
+            logger.error(f"Response body: {response.text}")
             return None
             
     except Exception as e:
@@ -815,10 +822,32 @@ def _generate_technical_questions(role: str, requirements: List[str]) -> List[st
     Generates role-specific technical questions based on job requirements
     """
     try:
+        prompt = f"""You are a technical interview expert. Generate 5 technical interview questions for a {role} position.
+
+Key Requirements: {', '.join(requirements)}
+
+Provide 5 specific, challenging technical questions that assess:
+1. Core technical knowledge
+2. Problem-solving ability
+3. Real-world experience
+4. Best practices
+5. System design or architecture
+
+Format: One question per line.
+
+Questions:"""
+
+        ai_response = _call_watsonx_api(prompt, max_tokens=400)
+        
+        if ai_response:
+            questions = [q.strip() for q in ai_response.split('\n') if q.strip() and len(q.strip()) > 10]
+            if len(questions) >= 3:
+                return questions[:5]
+        
+        # Fallback if AI fails
         role_lower = role.lower()
         questions = []
         
-        # Role-specific technical questions
         if 'frontend' in role_lower or 'react' in role_lower:
             questions.extend([
                 "Explain the component lifecycle in React and how hooks changed it",
@@ -879,17 +908,34 @@ def _generate_behavioral_questions(company: str, role: str) -> List[str]:
     Generates behavioral questions customized to company culture
     """
     try:
+        prompt = f"""You are an expert interviewer. Generate 5 behavioral interview questions for a {role} position at {company}.
+
+These questions should assess:
+1. Cultural fit with {company}
+2. Leadership and teamwork
+3. Problem-solving under pressure
+4. Motivation and career goals
+5. Learning and adaptability
+
+Use STAR method format (Situation, Task, Action, Result).
+Format: One question per line.
+
+Questions:"""
+
+        ai_response = _call_watsonx_api(prompt, max_tokens=350)
+        
+        if ai_response:
+            questions = [q.strip() for q in ai_response.split('\n') if q.strip() and len(q.strip()) > 15]
+            if len(questions) >= 3:
+                return questions[:5]
+        
+        # Fallback if AI fails
         questions = [
             f"Why are you interested in the {role} position at {company}?",
             "Tell us about a time you had to collaborate with a difficult team member",
             "Describe a situation where you had to meet a tight deadline - how did you handle it?",
             f"What attracted you to {company}'s mission and culture?",
-            "Tell us about a time you failed - what did you learn?",
-            "Describe a time you took initiative and went above and beyond",
-            "How do you handle constructive criticism and feedback?",
-            "Tell us about a time you improved a process or suggested innovation",
-            f"Why do you think you're a good fit for {company}?",
-            "Describe your approach to continuous learning and professional development"
+            "Tell us about a time you failed - what did you learn?"
         ]
         
         # Customize first question based on company
@@ -918,12 +964,39 @@ def _generate_interview_tips(company: str, role: str, requirements: List[str]) -
     Generates customized interview tips and success strategies
     """
     try:
+        req_text = ', '.join(requirements) if requirements else 'the role requirements'
+        
+        prompt = f"""You are an interview coach. Provide 7 specific, actionable interview tips for a candidate applying for {role} at {company}.
+
+Key Requirements: {req_text}
+
+Tips should cover:
+1. Company research and preparation
+2. How to answer behavioral questions
+3. Technical preparation strategies
+4. Questions to ask the interviewer
+5. Body language and presentation
+6. Follow-up best practices
+7. Common mistakes to avoid
+
+Format: One tip per line, be specific and actionable.
+
+Tips:"""
+
+        ai_response = _call_watsonx_api(prompt, max_tokens=450)
+        
+        if ai_response:
+            tips = [t.strip() for t in ai_response.split('\n') if t.strip() and len(t.strip()) > 15]
+            if len(tips) >= 5:
+                return tips[:7]
+        
+        # Fallback if AI fails
         tips = [
             f"Research {company}'s recent products, initiatives, and company culture before the interview",
             "Use the STAR method (Situation, Task, Action, Result) for behavioral questions",
             "Prepare 3-5 specific examples from your experience that highlight relevant achievements",
             "Ask thoughtful questions about the team structure and success metrics for the role",
-            f"Highlight your experience with {requirements[0] if requirements else 'relevant technologies'}"
+            f"Highlight your experience with {req_text}"
         ]
         
         # Add role-specific tips
