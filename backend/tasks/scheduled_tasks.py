@@ -58,8 +58,8 @@ def check_pending_follow_ups():
         logger.info("Checking pending follow-ups...")
         
         async def _check_follow_ups():
-            from backend.config.database import get_applications_collection, get_users_collection, get_jobs_collection
-            from backend.services.notifications import send_follow_up_reminder
+            from config.database import get_applications_collection, get_users_collection, get_jobs_collection
+            from services.notifications import send_follow_up_reminder
             
             applications_collection = await get_applications_collection()
             users_collection = await get_users_collection()
@@ -116,11 +116,11 @@ def fetch_new_jobs_daily():
         logger.info("Fetching new jobs from APIs...")
         
         async def _fetch_jobs():
-            from backend.config.database import get_users_collection, get_jobs_collection
-            from backend.services.job_api_service import aggregate_from_all_sources
-            from backend.services.matcher import find_matching_jobs, batch_create_job_embeddings
-            from backend.services.notifications import send_new_job_alert
-            from backend.models.database import JobPosting
+            from config.database import get_users_collection, get_jobs_collection
+            from services.job_api_service import aggregate_from_all_sources
+            from services.matcher import find_matching_jobs, batch_create_job_embeddings
+            from services.notifications import send_new_job_alert
+            from models.database import JobPosting
             
             users_collection = await get_users_collection()
             jobs_collection = await get_jobs_collection()
@@ -215,8 +215,8 @@ def send_weekly_summary():
         logger.info("Sending weekly summaries...")
         
         async def _send_summaries():
-            from backend.config.database import get_users_collection, get_applications_collection
-            from backend.services.notifications import send_weekly_summary as send_summary_email
+            from config.database import get_users_collection, get_applications_collection
+            from services.notifications import send_weekly_summary as send_summary_email
             
             users_collection = await get_users_collection()
             applications_collection = await get_applications_collection()
