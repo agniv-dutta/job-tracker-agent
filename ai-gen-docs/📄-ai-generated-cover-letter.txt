@@ -1,0 +1,31 @@
+[Your Name]
+[Your Address]
+[City, State, Zip Code]
+[Email Address]
+[Phone Number]
+[Date]
+
+SourcePro Search
+[Company Address]
+[City, State, Zip Code]
+
+Dear Hiring Manager,
+
+I am writing to express my keen interest in the Front-End WebApp Software Developer (Junior) position at SourcePro Search, as advertised. As an aspiring software developer with a strong passion for front-end technologies, I am eager to contribute my skills and learn from the talented team at SourcePro Search.
+
+Throughout my academic journey, I have honed my proficiency in HTML, CSS, and JavaScript, which form the cornerstone of modern front-end development. My coursework has also exposed me to popular frameworks such as React and Angular, enabling me to create dynamic and responsive user interfaces. Additionally, I have gained hands-on experience working on personal projects, where I've implemented best practices for code organization, version control using Git, and collaboration through platforms like GitHub. These experiences have equipped me with a solid foundation in front-end development, making me well-prepared to excel in this role.
+
+What excites me most about joining SourcePro Search is the opportunity to work alongside a diverse group of developers at various levels. This environment fosters continuous learning and growth, aligning perfectly with my career goals. I am particularly drawn to your commitment to mentoring junior developers, as it provides an ideal setting for me to not only develop my technical abilities but also gain valuable insights into industry best practices.
+
+In conclusion, I believe my foundational knowledge in front-end technologies, coupled with my eagerness to learn and grow, make me an excellent candidate for this position. I am confident that my contributions will add value to your team and help drive the success of your projects. I would welcome the opportunity to further discuss how my background and aspirations align with the needs of SourcePro Search. Thank you for considering my application. I look forward to the possibility of contributing to your esteemed organization.
+
+Sincerely,
+Agniv Dutta
+
+Enclosure: Resume
+
+P.S. Please find attached my resume for your review.
+
+[Your Name]
+[Your Email Address]
+[Phone Number]

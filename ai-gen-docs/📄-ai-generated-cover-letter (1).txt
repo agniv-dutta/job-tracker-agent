@@ -1,0 +1,27 @@
+[Your Name]
+[Your Address]
+[City, State, Zip Code]
+[Email Address]
+[Phone Number]
+[Date]
+
+SourcePro Search
+[Company Address]
+[City, State, Zip Code]
+
+Dear Hiring Manager,
+
+I am writing to express my keen interest in the Front-End WebApp Software Developer (Junior) position at SourcePro Search, as advertised. With over five years of experience in developing cutting-edge web applications using various technologies such as AI, Bootstrap, CSS, Django, Flask, GCP, Git, and HTML, I am confident that my skill set aligns perfectly with your requirements. My passion for creating intuitive user interfaces and my ability to work seamlessly within a collaborative environment make me an ideal candidate for this role.
+
+Throughout my career, I have honed my skills in designing responsive websites and web applications using modern frameworks like Bootstrap and CSS. Additionally, my proficiency in server-side languages such as Django and Flask has enabled me to develop robust backend systems. Furthermore, my experience with cloud platforms like Google Cloud Platform (GCP) and version control systems like Git has allowed me to manage projects efficiently and maintain code integrity. These experiences have equipped me with the necessary tools to contribute effectively to your dynamic team of developers and mission leaders.
+
+What excites me most about joining SourcePro Search is the opportunity to work alongside a diverse group of talented individuals who share a common goal of delivering exceptional web solutions. The prospect of learning from more experienced colleagues while simultaneously contributing my own knowledge and insights is incredibly appealing. I am eager to bring my creativity, problem-solving abilities, and dedication to continuous improvement to your team.
+
+Thank you for considering my application. I would welcome the opportunity to further discuss how my background and skills can benefit SourcePro Search. Please feel free to contact me via email or phone at your earliest convenience to arrange an interview.
+
+Sincerely,
+Agniv Dutta
+
+Enclosure: Resume
+
+P.S. I look forward to potentially becoming a valuable member of your esteemed organization.
